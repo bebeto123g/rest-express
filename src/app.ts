@@ -9,7 +9,6 @@ const app: Express = express();
 const port = process.env.PORT;
 
 app.post('/posts', sendJson);
-
 app.post('/todos', sendJson);
 
 // Папка со статикой static
