@@ -5,6 +5,19 @@
     <title>Static HTML</title>
 </head>
 <body>
-    <h1>Тестовый статиченский файл</h1>
+<h1>Тестовый статиченский файл</h1>
+<script>
+    fetch('http://localhost:3030/posts', {
+        method: 'POST'
+    }).then((response) => response.json()).then((posts) => {
+        console.log({ posts });
+    });
+
+    fetch('http://localhost:3030/todos', {
+        method: 'POST'
+    }).then((response) => response.json()).then((todos) => {
+        console.log({ todos });
+    });
+</script>
 </body>
 </html>

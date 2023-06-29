@@ -1,13 +1,20 @@
-const express = require('express');
-const path = require('path');
-
-const app = express();
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const path_1 = __importDefault(require("path"));
+const dotenv_1 = __importDefault(require("dotenv"));
+const utils_1 = require("./utils");
+dotenv_1.default.config();
+const app = (0, express_1.default)();
+const port = process.env.PORT;
+app.post('/posts', utils_1.sendJson);
+app.post('/todos', utils_1.sendJson);
 // Папка со статикой static
-app.use(express.static(path.resolve(__dirname, 'static')));
-
+app.use(express_1.default.static(path_1.default.resolve(__dirname, 'static')));
 app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'static', 'index.html'));
+    res.sendFile(path_1.default.resolve(__dirname, 'static', 'index.html'));
 });
-
-app.listen(3030, () => console.log('listen started port 3030'));
+app.listen(port, () => console.log('listen started port 3030'));
