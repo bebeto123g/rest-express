@@ -6,24 +6,6 @@
 </head>
 <body>
 <h1>Тестовый статиченский файл</h1>
-<script>
-    fetch('http://localhost:3030/json/posts', {
-        method: 'POST'
-    }).then((response) => response.json()).then((posts) => {
-        console.log({ posts });
-    });
-
-    fetch('http://localhost:3030/json/todos', {
-        method: 'POST'
-    }).then((response) => response.json()).then((todos) => {
-        console.log({ todos });
-    });
-
-    fetch('http://localhost:3030/json/todos2', {
-        method: 'POST'
-    }).then((response) => response.json()).then((todos2) => {
-        console.log({ todos2 });
-    });
-</script>
+<script src='script.js' defer></script>
 </body>
 </html>
