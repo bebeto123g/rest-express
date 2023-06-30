@@ -9,8 +9,11 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const utils_1 = require("./utils");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-const port = process.env.PORT;
-app.post('/json/:json', utils_1.sendJson);
+/* Middleware для парсинга request.body из blob в json формат для запросов */
+app.use(express_1.default.json());
+const port = process.env.PORT || 3030;
+app.post('/:json', utils_1.sendJson);
+app.post('/:json/create', utils_1.addItemToJson);
 // Папка со статикой static
 app.use(express_1.default.static(path_1.default.resolve(__dirname, 'static')));
 app.get('*', (req, res) => {

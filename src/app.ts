@@ -1,14 +1,18 @@
 import express from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
-import { sendJson } from './utils';
+import { addItemToJson, sendJson } from './utils';
 
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT;
+/* Middleware для парсинга request.body из blob в json формат для запросов */
+app.use(express.json())
 
-app.post('/json/:json', sendJson);
+const port = process.env.PORT || 3030;
+
+app.post('/:json', sendJson);
+app.post('/:json/create', addItemToJson);
 
 // Папка со статикой static
 app.use(express.static(path.resolve(__dirname, 'static')));
