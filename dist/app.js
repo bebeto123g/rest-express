@@ -10,8 +10,7 @@ const utils_1 = require("./utils");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
-app.post('/posts', utils_1.sendJson);
-app.post('/todos', utils_1.sendJson);
+app.post('/json/:json', utils_1.sendJson);
 // Папка со статикой static
 app.use(express_1.default.static(path_1.default.resolve(__dirname, 'static')));
 app.get('*', (req, res) => {
