@@ -1,5 +1,10 @@
 [
   {
+    "title": "Puppa Post",
+    "text": "Zaluppa",
+    "id": 1688241318818
+  },
+  {
     "id": 101,
     "title": "Post for JSON server",
     "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam, veritatis!",

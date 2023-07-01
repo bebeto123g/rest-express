@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
-import { ResponseUtils } from '../../Core/Utils';
 import { EJsonEntity, JsonModel } from '../../Models/JsonModel';
 import { IPost } from '../../Models/PostsModel';
 import { ITodo } from '../../Models/TodosModel';
+import { JsonActionRouteDecorator } from './decorators';
+import { IActionResponse } from './interfaces';
 
 export class JsonActions {
     private readonly models: Record<EJsonEntity, JsonModel<ITodo | IPost>>;
@@ -24,61 +25,37 @@ export class JsonActions {
         this.setActiveEntity = this.setActiveEntity.bind(this);
     }
 
-    public get(req: Request, res: Response) {
-        try {
-            this.setActiveEntity(req);
-            const { page = 1, limit = 100, search = '' } = req.query;
-
-            const data = this.model.get({
+    @JsonActionRouteDecorator
+    public get(req: Request, _res: Response): IActionResponse {
+        const { page = 1, limit = 100, search = '' } = req.query;
+        return {
+            data: this.model.get({
                 page: Number(page),
                 limit: Number(limit),
                 search: search.toString(),
-            });
-
-            ResponseUtils.sendSuccess({ res, data });
-        } catch (e) {
-            ResponseUtils.sendError(res, e);
-        }
+            }),
+        };
     }
 
-    public getById(req: Request, res: Response) {
-        try {
-            this.setActiveEntity(req);
-            const data = this.model.getById(Number(req.params.id));
-            ResponseUtils.sendSuccess({ res, data });
-        } catch (e) {
-            ResponseUtils.sendError(res, e);
-        }
+    @JsonActionRouteDecorator
+    public getById(req: Request, _res: Response): IActionResponse {
+        return { data: this.model.getById(Number(req.params.id)) };
     }
 
-    public create(req: Request, res: Response) {
-        try {
-            this.setActiveEntity(req);
-            const data = this.model.create(req.body);
-            ResponseUtils.sendSuccess({ res, status: 201, data });
-        } catch (e) {
-            ResponseUtils.sendError(res, e);
-        }
+    @JsonActionRouteDecorator
+    public create(req: Request, _res: Response): IActionResponse {
+        return { data: this.model.create(req.body), status: 201 };
     }
 
-    public update(req: Request, res: Response) {
-        try {
-            this.setActiveEntity(req);
-            const data = this.model.update(Number(req.params.id), req.body);
-            ResponseUtils.sendSuccess({ res, data });
-        } catch (e) {
-            ResponseUtils.sendError(res, e);
-        }
+    @JsonActionRouteDecorator
+    public update(req: Request, _res: Response): IActionResponse {
+        return { data: this.model.update(Number(req.params.id), req.body) };
     }
 
-    public delete(req: Request, res: Response) {
-        try {
-            this.setActiveEntity(req);
-            this.model.delete(Number(req.params.id));
-            ResponseUtils.sendSuccess({ res });
-        } catch (e) {
-            ResponseUtils.sendError(res, e);
-        }
+    @JsonActionRouteDecorator
+    public delete(req: Request, _res: Response): IActionResponse {
+        this.model.delete(Number(req.params.id));
+        return {};
     }
 
     private setActiveEntity(req: Request) {
