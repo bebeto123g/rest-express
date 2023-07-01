@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "title": "Learn React Query",
+    "completed": true
+  },
+  {
+    "title": "React 18",
+    "completed": false,
+    "id": 2
+  },
+  {
+    "title": "NextJS",
+    "completed": true,
+    "id": 3
+  },
+  {
+    "completed": true,
+    "title": "Vue",
+    "id": 4
+  },
+  {
+    "title": "Redux Toolkit",
+    "completed": false,
+    "id": 5
+  },
+  {
+    "completed": false,
+    "title": "RTK Query",
+    "id": 6
+  }
+]

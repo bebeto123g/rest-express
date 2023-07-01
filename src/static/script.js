@@ -1,4 +1,3 @@
-'use strict';
 fetch('http://localhost:3030/posts', {
     method: 'POST',
 })
@@ -6,6 +5,7 @@ fetch('http://localhost:3030/posts', {
     .then((posts) => {
         console.log({ posts });
     });
+
 fetch('http://localhost:3030/todos', {
     method: 'POST',
 })
@@ -13,6 +13,7 @@ fetch('http://localhost:3030/todos', {
     .then((todos) => {
         console.log({ todos });
     });
+
 fetch('http://localhost:3030/todos?search=react', {
     method: 'POST',
 })
@@ -20,6 +21,7 @@ fetch('http://localhost:3030/todos?search=react', {
     .then((queryTodos) => {
         console.log({ queryTodos });
     });
+
 fetch('http://localhost:3030/posts?search=puppa', {
     method: 'POST',
 })
@@ -27,6 +29,7 @@ fetch('http://localhost:3030/posts?search=puppa', {
     .then((queryTodos) => {
         console.log({ queryTodos });
     });
+
 fetch('http://localhost:3030/todos2', {
     method: 'POST',
 })
