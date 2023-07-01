@@ -1,3 +1,7 @@
 # Rest-API через Express NodeJS
 
-По гайду Минина [Видео](https://www.youtube.com/watch?v=lzQIhjElV_g).
+### Запуск dev-сервера [http://localhost:3030](http://localhost:3030)
+### `npm run dev`
+
+### Обращения к API. Все корневые роуты *EAppRoute*
+`/json` - запросы к static/json файлам, доступные роуты в ***EJsonRoute***

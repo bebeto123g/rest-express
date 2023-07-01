@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { EStatusCode } from '../../Core/enums';
+import { ResponseUtils } from '../../Core/Utils';
 import { EJsonEntity, JsonModel } from '../../Models/JsonModel';
 import { IPost } from '../../Models/PostsModel';
 import { ITodo } from '../../Models/TodosModel';
@@ -35,40 +35,39 @@ export class JsonActions {
                 search: search.toString(),
             });
 
-            res.status(200).send({
-                statusCode: EStatusCode.OK,
-                statusDesc: null,
-                data,
-            });
+            ResponseUtils.sendSuccess({ res, data });
         } catch (e) {
-            JsonActions.sendError(res, e);
+            ResponseUtils.sendError(res, e);
         }
     }
 
     public getById(req: Request, res: Response) {
         try {
             this.setActiveEntity(req);
-            this.model.getById(Number(req.params.id));
+            const data = this.model.getById(Number(req.params.id));
+            ResponseUtils.sendSuccess({ res, data });
         } catch (e) {
-            JsonActions.sendError(res, e);
+            ResponseUtils.sendError(res, e);
         }
     }
 
     public create(req: Request, res: Response) {
         try {
             this.setActiveEntity(req);
-            this.model.create(req.body);
+            const data = this.model.create(req.body);
+            ResponseUtils.sendSuccess({ res, status: 201, data });
         } catch (e) {
-            JsonActions.sendError(res, e);
+            ResponseUtils.sendError(res, e);
         }
     }
 
     public update(req: Request, res: Response) {
         try {
             this.setActiveEntity(req);
-            this.model.update(Number(req.params.id), req.body);
+            const data = this.model.update(Number(req.params.id), req.body);
+            ResponseUtils.sendSuccess({ res, data });
         } catch (e) {
-            JsonActions.sendError(res, e);
+            ResponseUtils.sendError(res, e);
         }
     }
 
@@ -76,8 +75,9 @@ export class JsonActions {
         try {
             this.setActiveEntity(req);
             this.model.delete(Number(req.params.id));
+            ResponseUtils.sendSuccess({ res });
         } catch (e) {
-            JsonActions.sendError(res, e);
+            ResponseUtils.sendError(res, e);
         }
     }
 
@@ -96,13 +96,5 @@ export class JsonActions {
         }
 
         return model;
-    }
-
-    private static sendError(res: Response, e: any) {
-        res.status(400).send({
-            statusCode: EStatusCode.NOT_FOUND_JSON,
-            statusDesc: e?.message || 'Данные недоступны или не существуют',
-            data: null,
-        });
     }
 }

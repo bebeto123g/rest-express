@@ -1,23 +1,17 @@
 import path from 'path';
 import dotenv from 'dotenv';
 import express from 'express';
-import { EJsonRoute, JsonActions } from './Actions/JsonActions';
+import { EAppRoute } from './Core/enums';
+import { JsonRouter } from './Routes/JsonRouter';
+
+const port = process.env.PORT || 3030;
 
 dotenv.config();
 
 const app = express();
 /* Middleware для парсинга request.body из blob в json формат для запросов */
 app.use(express.json());
-
-const port = process.env.PORT || 3030;
-
-const jsonActions = new JsonActions();
-
-app.post(EJsonRoute.GET, jsonActions.get);
-app.post(EJsonRoute.GET_BY_ID, jsonActions.getById);
-app.post(EJsonRoute.CREATE, jsonActions.create);
-app.put(EJsonRoute.UPDATE, jsonActions.update);
-app.delete(EJsonRoute.DELETE, jsonActions.delete);
+app.use(EAppRoute.JSON, JsonRouter);
 
 // Папка со статикой static
 app.use(express.static(path.resolve(__dirname, 'static')));
