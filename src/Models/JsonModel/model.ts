@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { EJsonEntity } from './enums';
 
-export class JsonModel<T extends { id: number; title: string }> {
+export class JsonModel<T extends { id: number; title?: string; name?: string }> {
     entity: EJsonEntity;
 
     constructor(entity: EJsonEntity) {
@@ -14,7 +14,11 @@ export class JsonModel<T extends { id: number; title: string }> {
         let jsonData = this.getJson();
 
         if (search) {
-            jsonData = jsonData.filter(({ title }) => title?.toLowerCase().includes(search.toLowerCase()));
+            jsonData = jsonData.filter(
+                ({ title, name }) =>
+                    title?.toLowerCase().includes(search.toLowerCase()) ||
+                    name?.toLowerCase().includes(search.toLowerCase())
+            );
         }
 
         const start = page === 1 ? 0 : page * limit - 1;

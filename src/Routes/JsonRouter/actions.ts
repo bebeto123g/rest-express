@@ -1,18 +1,26 @@
 import { Request, Response } from 'express';
+import { IAlbum } from '../../Models/AlbumsModel';
+import { IComment } from '../../Models/CommentsModel';
 import { EJsonEntity, JsonModel } from '../../Models/JsonModel';
+import { IPhoto } from '../../Models/PhotosModel';
 import { IPost } from '../../Models/PostsModel';
 import { ITodo } from '../../Models/TodosModel';
+import { IUser } from '../../Models/UsersModel';
 import { JsonActionRouteDecorator } from './decorators';
-import { IActionResponse } from './interfaces';
+import { IActionResponse, TJsonEntities } from './interfaces';
 
 export class JsonActions {
-    private readonly models: Record<EJsonEntity, JsonModel<ITodo | IPost>>;
+    private readonly models: Record<EJsonEntity, JsonModel<TJsonEntities>>;
     private activeEntity: EJsonEntity | null;
 
     constructor() {
         this.models = {
             [EJsonEntity.TODOS]: new JsonModel<ITodo>(EJsonEntity.TODOS),
             [EJsonEntity.POSTS]: new JsonModel<IPost>(EJsonEntity.POSTS),
+            [EJsonEntity.ALBUMS]: new JsonModel<IAlbum>(EJsonEntity.ALBUMS),
+            [EJsonEntity.COMMENTS]: new JsonModel<IComment>(EJsonEntity.COMMENTS),
+            [EJsonEntity.PHOTOS]: new JsonModel<IPhoto>(EJsonEntity.PHOTOS),
+            [EJsonEntity.USERS]: new JsonModel<IUser>(EJsonEntity.USERS),
         };
 
         this.activeEntity = null;

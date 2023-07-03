@@ -1,6 +1,5 @@
-export interface ITodo {
+export interface IComment {
     userId: number;
     id: number;
     title: string;
-    completed: boolean;
 }
