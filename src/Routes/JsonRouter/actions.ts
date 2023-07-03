@@ -29,6 +29,7 @@ export class JsonActions {
     public get(req: Request, _res: Response): IActionResponse {
         const { page = 1, limit = 100, search = '' } = req.query;
         return {
+            status: 200,
             data: this.model.get({
                 page: Number(page),
                 limit: Number(limit),
@@ -39,26 +40,26 @@ export class JsonActions {
 
     @JsonActionRouteDecorator
     public getById(req: Request, _res: Response): IActionResponse {
-        return { data: this.model.getById(Number(req.params.id)) };
+        return { status: 200, data: this.model.getById(Number(req.params.id)) };
     }
 
     @JsonActionRouteDecorator
     public create(req: Request, _res: Response): IActionResponse {
-        return { data: this.model.create(req.body), status: 201 };
+        return { status: 201, data: this.model.create(req.body) };
     }
 
     @JsonActionRouteDecorator
     public update(req: Request, _res: Response): IActionResponse {
-        return { data: this.model.update(Number(req.params.id), req.body) };
+        return { status: 200, data: this.model.update(Number(req.params.id), req.body) };
     }
 
     @JsonActionRouteDecorator
     public delete(req: Request, _res: Response): IActionResponse {
         this.model.delete(Number(req.params.id));
-        return {};
+        return { status: 200 };
     }
 
-    private setActiveEntity(req: Request) {
+    public setActiveEntity(req: Request) {
         this.activeEntity = req.params.json as EJsonEntity;
     }
 

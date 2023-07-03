@@ -9,18 +9,23 @@ fetch('http://localhost:3030/json/todos')
     .then((todos) => {
         console.log({ todos });
     });
-fetch('http://localhost:3030/todos?search=react')
+fetch('http://localhost:3030/json/todos?search=react')
     .then((response) => response.json())
     .then((queryTodos) => {
         console.log({ queryTodos });
     });
-fetch('http://localhost:3030/posts?search=puppa')
+fetch('http://localhost:3030/json/posts?search=puppa')
     .then((response) => response.json())
     .then((queryTodos) => {
         console.log({ queryTodos });
     });
-fetch('http://localhost:3030/todos2')
+fetch('http://localhost:3030/json/todos2')
     .then((response) => response.json())
     .then((todos2) => {
         console.log({ todos2 });
+    });
+fetch('http://localhost:3030/json/todos/1')
+    .then((response) => response.json())
+    .then((todo) => {
+        console.log({ todo });
     });
