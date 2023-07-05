@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { JsonActions } from './actions';
+import { JsonActions } from '../../Actions/JsonActions';
 import { EJsonRoute } from './enums';
 
 export const JsonRouter = Router();

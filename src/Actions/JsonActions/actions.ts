@@ -1,28 +1,16 @@
 import { Request, Response } from 'express';
-import { IAlbum } from '../../Models/AlbumsModel';
-import { IComment } from '../../Models/CommentsModel';
-import { EJsonEntity, JsonModel } from '../../Models/JsonModel';
-import { IPhoto } from '../../Models/PhotosModel';
-import { IPost } from '../../Models/PostsModel';
-import { ITodo } from '../../Models/TodosModel';
-import { IUser } from '../../Models/UsersModel';
+import { IActionResponse } from '../../Core/interfaces';
+import { EJsonEntity, JSON_MODEL_LIST, JsonModel, TJsonEntities } from '../../Models/JsonModel';
 import { JsonActionRouteDecorator } from './decorators';
-import { IActionResponse, TJsonEntities } from './interfaces';
+
+type TModelsList = Record<EJsonEntity, JsonModel<TJsonEntities>>;
 
 export class JsonActions {
-    private readonly models: Record<EJsonEntity, JsonModel<TJsonEntities>>;
+    private readonly models: TModelsList;
     private activeEntity: EJsonEntity | null;
 
     constructor() {
-        this.models = {
-            [EJsonEntity.TODOS]: new JsonModel<ITodo>(EJsonEntity.TODOS),
-            [EJsonEntity.POSTS]: new JsonModel<IPost>(EJsonEntity.POSTS),
-            [EJsonEntity.ALBUMS]: new JsonModel<IAlbum>(EJsonEntity.ALBUMS),
-            [EJsonEntity.COMMENTS]: new JsonModel<IComment>(EJsonEntity.COMMENTS),
-            [EJsonEntity.PHOTOS]: new JsonModel<IPhoto>(EJsonEntity.PHOTOS),
-            [EJsonEntity.USERS]: new JsonModel<IUser>(EJsonEntity.USERS),
-        };
-
+        this.models = JsonActions.createModels();
         this.activeEntity = null;
 
         this.get = this.get.bind(this);
@@ -34,7 +22,7 @@ export class JsonActions {
     }
 
     @JsonActionRouteDecorator
-    public get(req: Request, _res: Response): IActionResponse {
+    public get(req: Request, _res: Response): IActionResponse | void {
         const { page = 1, limit = 100, search = '' } = req.query;
         return {
             status: 200,
@@ -47,31 +35,31 @@ export class JsonActions {
     }
 
     @JsonActionRouteDecorator
-    public getById(req: Request, _res: Response): IActionResponse {
+    public getById(req: Request, _res: Response): IActionResponse | void {
         return { status: 200, data: this.model.getById(Number(req.params.id)) };
     }
 
     @JsonActionRouteDecorator
-    public create(req: Request, _res: Response): IActionResponse {
+    public create(req: Request, _res: Response): IActionResponse | void {
         return { status: 201, data: this.model.create(req.body) };
     }
 
     @JsonActionRouteDecorator
-    public update(req: Request, _res: Response): IActionResponse {
+    public update(req: Request, _res: Response): IActionResponse | void {
         return { status: 200, data: this.model.update(Number(req.params.id), req.body) };
     }
 
     @JsonActionRouteDecorator
-    public delete(req: Request, _res: Response): IActionResponse {
+    public delete(req: Request, _res: Response): IActionResponse | void {
         this.model.delete(Number(req.params.id));
         return { status: 200 };
     }
 
-    public setActiveEntity(req: Request) {
+    public setActiveEntity(req: Request): void {
         this.activeEntity = req.params.json as EJsonEntity;
     }
 
-    private get model() {
+    private get model(): JsonModel<TJsonEntities> {
         if (!this.activeEntity) {
             throw new Error('dev error activeEntity get model');
         }
@@ -82,5 +70,12 @@ export class JsonActions {
         }
 
         return model;
+    }
+
+    private static createModels(): TModelsList {
+        return JSON_MODEL_LIST.reduce(
+            (acc, modelKey) => ({ ...acc, [modelKey]: new JsonModel<TJsonEntities>(modelKey) }),
+            {} as TModelsList
+        );
     }
 }

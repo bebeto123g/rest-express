@@ -4,6 +4,7 @@ import { IResponseSendProps } from './interfaces';
 export class ResponseUtils {
     public static sendError(props: IResponseSendProps) {
         const { res, status = 400, error } = props;
+
         res.status(status).send({
             statusCode: EStatusCode.NOT_FOUND_JSON,
             statusDesc: error?.message || 'Данные недоступны или не существуют',
