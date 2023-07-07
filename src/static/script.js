@@ -1,35 +1,32 @@
-fetch('http://localhost:3030/json/posts')
-    .then((response) => response.json())
-    .then((posts) => {
-        console.log({ posts });
-    });
+'use strict';
+const button = document.getElementById('download-screen-button');
 
-fetch('http://localhost:3030/json/todos')
-    .then((response) => response.json())
-    .then((todos) => {
-        console.log({ todos });
+const deleteBlobUrl = (downloadUrl) => {
+    setTimeout(() => {
+        window.URL.revokeObjectURL(downloadUrl);
     });
+};
 
-fetch('http://localhost:3030/json/todos?search=react')
-    .then((response) => response.json())
-    .then((queryTodos) => {
-        console.log({ queryTodos });
-    });
+button.addEventListener('click', () => {
+    fetch('/download/img/screen.png')
+        .then((res) => {
+            console.log({ res });
+            return res.blob();
+        })
+        .then((responseBlob) => {
+            const downloadLink = document.createElement('a');
+            const blob = new Blob([responseBlob], { type: 'image/png' });
+            const downloadUrl = window.URL.createObjectURL(blob);
 
-fetch('http://localhost:3030/json/posts?search=puppa')
-    .then((response) => response.json())
-    .then((queryTodos) => {
-        console.log({ queryTodos });
-    });
+            if (typeof downloadLink.download === 'undefined') {
+                window.open(downloadUrl, '_blank', '');
+                deleteBlobUrl(downloadUrl);
+                return;
+            }
 
-fetch('http://localhost:3030/json/todos2')
-    .then((response) => response.json())
-    .then((todos2) => {
-        console.log({ todos2 });
-    });
-
-fetch('http://localhost:3030/json/todos/1')
-    .then((response) => response.json())
-    .then((todo) => {
-        console.log({ todo });
-    });
+            downloadLink.href = downloadUrl;
+            downloadLink.download = 'screen'; // имя файла
+            downloadLink.click();
+            deleteBlobUrl(downloadUrl);
+        });
+});
