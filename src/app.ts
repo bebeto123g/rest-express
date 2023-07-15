@@ -11,12 +11,12 @@ const port = process.env.PORT ?? 3030;
 dotenv.config();
 
 const app = express();
+app.set('view engine', 'ejs');
+app.set('views', path.resolve(__dirname, 'static'));
 
 /** Middlewares */
-
 /* Тестовый */
 app.use(exampleLoggerMiddleware);
-
 /* Для парсинга request.body из blob в json формат для запросов */
 app.use(express.json());
 
@@ -36,7 +36,7 @@ app.use(EAppRoute.JSON, JsonRouter);
 app.use(express.static(path.resolve(__dirname, 'static')));
 
 app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'static', 'index.html'));
+    res.render('index');
 });
 
 app.listen(port, () => console.log(`listen started port ${port}`));
